@@ -1,0 +1,35 @@
+{
+  "name": "siga-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma web multiperfil para SIGA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "check": "node --check server.js && node --check public/script.js && node --check database/sqlserver-store.js",
+    "test": "node --test tests/*.test.js",
+    "release:inspect": "npm pack --dry-run --json",
+    "production:preflight": "powershell -ExecutionPolicy Bypass -File operations/preflight.ps1",
+    "db:setup": "powershell -ExecutionPolicy Bypass -File database/setup.ps1",
+    "db:backup": "powershell -ExecutionPolicy Bypass -File database/backup.ps1",
+    "db:restore-test": "powershell -ExecutionPolicy Bypass -File database/restore-test.ps1",
+    "db:enable-tcp": "powershell -ExecutionPolicy Bypass -File database/enable-tcp.ps1",
+    "db:configure-app": "powershell -ExecutionPolicy Bypass -File database/configure-app.ps1"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "compression": "^1.8.1",
+    "exceljs": "^4.4.0",
+    "express": "5.3.0",
+    "mssql": "^12.7.10",
+    "multer": "^2.4.0",
+    "pdfkit": "^0.20.2",
+    "qrcode": "^1.5.4"
+  },
+  "overrides": {
+    "uuid": "11.1.1"
+  }
+}

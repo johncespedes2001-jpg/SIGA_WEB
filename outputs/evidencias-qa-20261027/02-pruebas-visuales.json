@@ -1,0 +1,59 @@
+{
+  "ok": true,
+  "findings": [
+    {
+      "section": "Acceso",
+      "width": 320,
+      "viewport": 320,
+      "document": 320,
+      "grid": "grid"
+    },
+    {
+      "section": "Acceso",
+      "width": 375,
+      "viewport": 375,
+      "document": 375,
+      "grid": "grid"
+    },
+    {
+      "section": "Acceso",
+      "width": 768,
+      "viewport": 768,
+      "document": 768,
+      "grid": "grid"
+    },
+    {
+      "section": "Acceso",
+      "width": 1366,
+      "viewport": 1366,
+      "document": 1366,
+      "grid": "grid"
+    },
+    {
+      "section": "Acceso",
+      "teclado": "Selección con flechas correcta"
+    },
+    {
+      "section": "Accesibilidad del acceso",
+      "arbol": "Seis perfiles con nombre y estado de selección"
+    },
+    {
+      "section": "Vínculos",
+      "search": "Nombre sin tilde y documento; selección conservada",
+      "modal": "Cabe en 320, 375, 768 y 1366 px"
+    },
+    {
+      "section": "Navegación",
+      "focus": {
+        "color": "rgb(179, 216, 255)",
+        "width": "3px"
+      },
+      "darkMode": "Activado y con foco visible"
+    },
+    {
+      "section": "Matrícula",
+      "search": "Búsqueda conserva selección",
+      "modal": "Cabe en 320, 375, 768 y 1366 px"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+.env*
+.github/
+.vscode/
+backups/
+data/
+informe_trabajo/
+outputs/
+tests/
+tmp/
+*.docx
+/*.jpg
+/*.png
+Untitled-1.js
+**/*.inspect.ndjson
+templates/.*.tmp*
+public/assets/images/siga-login-hero.png
+npm-debug.log*

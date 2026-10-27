@@ -1,0 +1,4 @@
+
+> siga-web@1.0.0 check
+> node --check server.js && node --check public/script.js && node --check database/sqlserver-store.js
+

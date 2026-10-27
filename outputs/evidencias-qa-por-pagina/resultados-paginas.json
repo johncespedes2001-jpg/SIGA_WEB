@@ -1,0 +1,1402 @@
+[
+  {
+    "role": "administrador",
+    "page": "carga-excel.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Importación Excel",
+      "heading": "Importación Excel",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/carga-excel.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "configuracion.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Seguridad",
+      "heading": "Seguridad",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/configuracion.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Mi cuenta",
+      "heading": "Mi cuenta",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "estudiantes.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Estudiantes",
+      "heading": "Estudiantes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/estudiantes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "personal.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Personal académico",
+      "heading": "Personal académico",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/personal.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "programas.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Programas",
+      "heading": "Programas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/programas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "reportes.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Reportes",
+      "heading": "Reportes",
+      "width": 1595,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 564,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/reportes.html",
+    "result": "revisar"
+  },
+  {
+    "role": "administrador",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Dashboard",
+      "heading": "Dashboard",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "vigilantes.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Vigilantes",
+      "heading": "Vigilantes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/vigilantes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "administrador",
+    "page": "vinculos.html",
+    "desktop": {
+      "title": "SIGA | Administrador · Vínculos familiares",
+      "heading": "Vínculos familiares",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/administrador/vinculos.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "clases.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Asignar cursos y docentes",
+      "heading": "Asignar cursos y docentes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/clases.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "estudiantes.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Estudiantes",
+      "heading": "Estudiantes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/estudiantes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "horarios.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Horarios docentes",
+      "heading": "Horarios docentes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/horarios.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "justificaciones.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Justificaciones",
+      "heading": "Justificaciones",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/justificaciones.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "permanencia.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Permanencia",
+      "heading": "Permanencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/permanencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "permisos.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Permisos",
+      "heading": "Permisos",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/permisos.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "reportes.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Reportes",
+      "heading": "Reportes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/reportes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Dashboard",
+      "heading": "Dashboard",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "coordinador",
+    "page": "seguridad.html",
+    "desktop": {
+      "title": "SIGA | Coordinador · Seguridad",
+      "heading": "Seguridad",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/coordinador/seguridad.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "asistencia.html",
+    "desktop": {
+      "title": "SIGA | Docente · Asistencia",
+      "heading": "Asistencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/asistencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "boletas.html",
+    "desktop": {
+      "title": "SIGA | Docente · Boletas de salida",
+      "heading": "Boletas de salida",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/boletas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Docente · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "estudiantes.html",
+    "desktop": {
+      "title": "SIGA | Docente · Mis estudiantes",
+      "heading": "Mis estudiantes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/estudiantes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "horario.html",
+    "desktop": {
+      "title": "SIGA | Docente · Mi horario",
+      "heading": "Mi horario",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/horario.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "reportes.html",
+    "desktop": {
+      "title": "SIGA | Docente · Reportes",
+      "heading": "Reportes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/reportes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "docente",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Docente · Inicio",
+      "heading": "Inicio",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/docente/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "avisos.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Avisos",
+      "heading": "Avisos",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/avisos.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Cuenta y sesión",
+      "heading": "Cuenta y sesión",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "justificaciones.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Justificaciones",
+      "heading": "Justificaciones",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/justificaciones.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "mi-asistencia.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Mi asistencia",
+      "heading": "Mi asistencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/mi-asistencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "mis-boletas.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Mis boletas",
+      "heading": "Mis boletas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/mis-boletas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "mis-clases.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Mi horario",
+      "heading": "Mi horario",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/mis-clases.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "perfil.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/perfil.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "qr-salida.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Mis códigos QR",
+      "heading": "Mis códigos QR",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/qr-salida.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Inicio",
+      "heading": "Inicio",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "solicitar-salida.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Solicitar salida",
+      "heading": "Solicitar salida",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/solicitar-salida.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "estudiante",
+    "page": "tutoria.html",
+    "desktop": {
+      "title": "SIGA | Estudiante · Tutoría",
+      "heading": "Tutoría",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/estudiante/tutoria.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "asistencia.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Asistencia",
+      "heading": "Asistencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/asistencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "avisos.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Avisos",
+      "heading": "Avisos",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/avisos.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "boletas.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Boletas de salida",
+      "heading": "Boletas de salida",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/boletas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "hijos.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Mis hijos",
+      "heading": "Mis hijos",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/hijos.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "justificaciones.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Justificaciones",
+      "heading": "Justificaciones",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 413,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/justificaciones.html",
+    "result": "revisar"
+  },
+  {
+    "role": "padre",
+    "page": "qr-salida.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · QR de salida",
+      "heading": "QR de salida",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/qr-salida.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Inicio",
+      "heading": "Inicio",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "reuniones.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Reuniones",
+      "heading": "Reuniones",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/reuniones.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "padre",
+    "page": "seguimiento.html",
+    "desktop": {
+      "title": "SIGA | Padre o apoderado · Seguimiento",
+      "heading": "Seguimiento",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/padre/seguimiento.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "alertas.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Alertas",
+      "heading": "Alertas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/alertas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "asistencia.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Asistencia",
+      "heading": "Asistencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/asistencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "comunicacion.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Comunicación",
+      "heading": "Comunicación",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/comunicacion.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "estudiantes.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Mis estudiantes",
+      "heading": "Mis estudiantes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/estudiantes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "incidencias.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Permanencia",
+      "heading": "Permanencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/incidencias.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "justificaciones.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Justificaciones",
+      "heading": "Justificaciones",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/justificaciones.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "permanencia.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Permanencia",
+      "heading": "Permanencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/permanencia.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "reportes.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Reportes",
+      "heading": "Reportes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/reportes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Inicio",
+      "heading": "Inicio",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "reuniones.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Comunicación",
+      "heading": "Comunicación",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/reuniones.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "tutor",
+    "page": "seguimiento.html",
+    "desktop": {
+      "title": "SIGA | Tutor · Permanencia",
+      "heading": "Permanencia",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/tutor/seguimiento.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "accesos.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Entradas y salidas",
+      "heading": "Entradas y salidas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 720,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/accesos.html",
+    "result": "revisar"
+  },
+  {
+    "role": "vigilante",
+    "page": "alertas.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Alertas",
+      "heading": "Alertas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/alertas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "consulta.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Consulta mínima",
+      "heading": "Consulta mínima",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/consulta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "cuenta.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Mi perfil",
+      "heading": "Mi perfil",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/cuenta.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "historial.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Historial",
+      "heading": "Historial",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/historial.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "incidencias.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Incidencias",
+      "heading": "Incidencias",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/incidencias.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "reportes.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Reportes",
+      "heading": "Reportes",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/reportes.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "resumen.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Inicio",
+      "heading": "Inicio",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/resumen.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "salidas.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Boletas autorizadas",
+      "heading": "Boletas autorizadas",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/salidas.html",
+    "result": "aprobada"
+  },
+  {
+    "role": "vigilante",
+    "page": "validar-qr.html",
+    "desktop": {
+      "title": "SIGA | Vigilante · Validar salida",
+      "heading": "Validar salida",
+      "width": 1366,
+      "viewport": 1366,
+      "body": false
+    },
+    "mobile": {
+      "width": 375,
+      "viewport": 375
+    },
+    "errors": [],
+    "apiErrors": [],
+    "http": 200,
+    "url": "/pages/vigilante/validar-qr.html",
+    "result": "aprobada"
+  }
+]

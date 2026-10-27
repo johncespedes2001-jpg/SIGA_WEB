@@ -1,0 +1,173 @@
+{
+  "input": "C:\\Users\\JAIRO\\Downloads\\FORMATO DE INFORME.docx",
+  "fonts_by_char_count": {
+    "Arial": 185,
+    "Consolas": 81,
+    "Segoe UI Symbol": 24,
+    "Calibri": 15
+  },
+  "direct_run_formatting_runs": 1163,
+  "direct_paragraph_formatting_paragraphs": 769,
+  "heading_like_paragraphs_not_heading_style": [
+    {
+      "para_index": 1,
+      "text": "INFORME FINAL DEL PROYECTO WEB",
+      "style": "Normal"
+    },
+    {
+      "para_index": 2,
+      "text": "TALLER DE PROGRAMACI\u00d3N WEB \u2013 SEMANA 16 VI SEMESTRE \u2013 APSTI",
+      "style": "Normal"
+    },
+    {
+      "para_index": 3,
+      "text": "FORMATO MODELO PARA PRESENTACI\u00d3N Y EVALUACI\u00d3N DEL PROYECTO FINAL",
+      "style": "Normal"
+    },
+    {
+      "para_index": 89,
+      "text": "Modelo de datos",
+      "style": "List Paragraph"
+    },
+    {
+      "para_index": 194,
+      "text": "DATO",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 195,
+      "text": "INFORMACI\u00d3N",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 210,
+      "text": "N.\u00ba",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 211,
+      "text": "Secci\u00f3n",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 212,
+      "text": "Evidencia principal",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 267,
+      "text": "Campo",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 268,
+      "text": "Informaci\u00f3n",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 295,
+      "text": "Usuario / rol",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 296,
+      "text": "Necesidad o funci\u00f3n",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 313,
+      "text": "N.\u00ba",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 314,
+      "text": "Requerimiento",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 315,
+      "text": "Prioridad",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 316,
+      "text": "Estado final",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 317,
+      "text": "Evidencia",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 380,
+      "text": "Componente",
+      "style": "Table Paragraph"
+    },
+    {
+      "para_index": 381,
+      "text": "Tecnolog\u00eda",
+      "style": "Table Paragraph"
+    }
+  ],
+  "examples": {
+    "direct_paragraph_formatting": [
+      {
+        "para_index": 1,
+        "text": "INFORME FINAL DEL PROYECTO WEB",
+        "style": "Normal"
+      },
+      {
+        "para_index": 2,
+        "text": "TALLER DE PROGRAMACI\u00d3N WEB \u2013 SEMANA 16 VI SEMESTRE \u2013 APSTI",
+        "style": "Normal"
+      },
+      {
+        "para_index": 3,
+        "text": "FORMATO MODELO PARA PRESENTACI\u00d3N Y EVALUACI\u00d3N DEL PROYECTO FINAL",
+        "style": "Normal"
+      },
+      {
+        "para_index": 4,
+        "text": "",
+        "style": "Body Text"
+      },
+      {
+        "para_index": 5,
+        "text": "Prop\u00f3sito del informe: documentar el proceso, resultados y evidencias del proyecto web desarrollado progresivamente dura",
+        "style": "Body Text"
+      }
+    ],
+    "direct_run_formatting": [
+      {
+        "para_index": 1,
+        "run_text": "INFORME",
+        "style": "Normal"
+      },
+      {
+        "para_index": 1,
+        "run_text": " ",
+        "style": "Normal"
+      },
+      {
+        "para_index": 1,
+        "run_text": "FINAL",
+        "style": "Normal"
+      },
+      {
+        "para_index": 1,
+        "run_text": " ",
+        "style": "Normal"
+      },
+      {
+        "para_index": 1,
+        "run_text": "DEL",
+        "style": "Normal"
+      }
+    ]
+  },
+  "notes": [
+    "Direct formatting is not always wrong, but it often causes inconsistent output when templates change.",
+    "Heading-like paragraphs not using Heading styles can break TOC and accessibility."
+  ]
+}

@@ -1,0 +1,852 @@
+{
+  "file": "D:\\SIGA_WEB\\SIGA-Web\\Informe_SIGA_hasta_punto_8.docx",
+  "counts": {
+    "high": 69,
+    "medium": 19,
+    "low": 0
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "149",
+        "name": "Graphic 149"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "150",
+        "name": "Graphic 150"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "151",
+        "name": "Graphic 151"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "152",
+        "name": "Graphic 152"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "153",
+        "name": "Graphic 153"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "154",
+        "name": "Graphic 154"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "155",
+        "name": "Group 155"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "157",
+        "name": "Group 157"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "159",
+        "name": "Group 159"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "161",
+        "name": "Group 161"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "163",
+        "name": "Group 163"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "165",
+        "name": "Group 165"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "167",
+        "name": "Group 167"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "169",
+        "name": "Group 169"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "171",
+        "name": "Group 171"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "173",
+        "name": "Group 173"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "175",
+        "name": "Group 175"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "177",
+        "name": "Group 177"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "179",
+        "name": "Group 179"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "181",
+        "name": "Group 181"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "183",
+        "name": "Group 183"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "185",
+        "name": "Group 185"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "187",
+        "name": "Group 187"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "189",
+        "name": "Group 189"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "191",
+        "name": "Group 191"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "193",
+        "name": "Group 193"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "195",
+        "name": "Group 195"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "197",
+        "name": "Group 197"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "199",
+        "name": "Group 199"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "201",
+        "name": "Group 201"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "203",
+        "name": "Group 203"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "205",
+        "name": "Group 205"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "207",
+        "name": "Group 207"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "209",
+        "name": "Group 209"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "211",
+        "name": "Group 211"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "213",
+        "name": "Group 213"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "215",
+        "name": "Group 215"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "217",
+        "name": "Group 217"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "219",
+        "name": "Group 219"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "221",
+        "name": "Group 221"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "223",
+        "name": "Group 223"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "225",
+        "name": "Group 225"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "227",
+        "name": "Group 227"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "229",
+        "name": "Group 229"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "231",
+        "name": "Group 231"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "233",
+        "name": "Graphic 233"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "234",
+        "name": "Graphic 234"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "235",
+        "name": "Graphic 235"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "236",
+        "name": "Group 236"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "238",
+        "name": "Group 238"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "240",
+        "name": "Group 240"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "242",
+        "name": "Group 242"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "244",
+        "name": "Group 244"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "246",
+        "name": "Group 246"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "248",
+        "name": "Group 248"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "250",
+        "name": "Group 250"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "252",
+        "name": "Graphic 252"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "253",
+        "name": "Graphic 253"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "254",
+        "name": "Graphic 254"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "255",
+        "name": "Graphic 255"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "256",
+        "name": "Group 256"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "258",
+        "name": "Group 258"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "260",
+        "name": "Group 260"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "262",
+        "name": "Group 262"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "264",
+        "name": "Graphic 264"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "265",
+        "name": "Graphic 265"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "266",
+        "name": "Graphic 266"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/document.xml",
+        "id": "267",
+        "name": "Graphic 267"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "medium",
+      "kind": "table_no_header_row",
+      "message": "Table first row is not marked as header (w:tblHeader missing)",
+      "context": {
+        "part": "word/document.xml"
+      }
+    },
+    {
+      "severity": "high",
+      "kind": "image_missing_alt",
+      "message": "Image missing alt text (descr/title empty)",
+      "context": {
+        "part": "word/footer1.xml",
+        "id": "1",
+        "name": "Textbox 1"
+      }
+    }
+  ]
+}

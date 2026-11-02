@@ -6,30 +6,57 @@
   "main": "server.js",
   "scripts": {
     "start": "node --env-file-if-exists=.env server.js",
+    "start:mariadb-local": "powershell -ExecutionPolicy Bypass -File operations/start-mariadb-local.ps1",
     "dev": "node --watch --env-file-if-exists=.env server.js",
-    "check": "node --check server.js && node --check public/script.js && node --check database/sqlserver-store.js",
+    "check": "node --check server.js && node --check public/script.js && node --check database/store.js && node --check database/data-protection.js && node --check database/mariadb-store.js && node --check database/mariadb-relational-sync.js && node --check database/mariadb-integrity.js && node --check database/setup-mariadb.js && node --check operations/configure-mariadb-app-user.js && node --check operations/mariadb-cli.js && node --check operations/backup-mariadb.js && node --check operations/protect-mariadb-state.js && node --check operations/restore-mariadb-test.js && node --check operations/reset-test-users.js && node --check operations/audit-database.js && node --check operations/remove-qr-test-data.js && node --check operations/official-data-preflight.js && node --check operations/prepare-official-data.js",
     "test": "node --test tests/*.test.js",
+    "test:isolated": "node tests/run-isolated-tests.js",
+    "test:visual": "node tests/visual-picker.test.js && node tests/visual-browser-check.js",
+    "test:pages": "node tests/page-audit-browser.js",
+    "test:cross-browser": "node tests/cross-browser-smoke.js",
+    "qa": "npm run check && npm run test:isolated && npm run test:visual && npm run test:pages && npm run test:cross-browser",
+    "qa:release-local": "npm run build:assets && npm run qa && npm audit --offline --omit=dev && npm run release:inspect",
+    "qa:local-complete": "powershell -ExecutionPolicy Bypass -File operations/run-local-readiness.ps1",
+    "build:assets": "node operations/build-production-assets.js",
     "release:inspect": "npm pack --dry-run --json",
     "production:preflight": "powershell -ExecutionPolicy Bypass -File operations/preflight.ps1",
-    "db:setup": "powershell -ExecutionPolicy Bypass -File database/setup.ps1",
-    "db:backup": "powershell -ExecutionPolicy Bypass -File database/backup.ps1",
-    "db:restore-test": "powershell -ExecutionPolicy Bypass -File database/restore-test.ps1",
-    "db:enable-tcp": "powershell -ExecutionPolicy Bypass -File database/enable-tcp.ps1",
-    "db:configure-app": "powershell -ExecutionPolicy Bypass -File database/configure-app.ps1"
+    "data:preflight": "node --env-file-if-exists=.env operations/official-data-preflight.js",
+    "data:preflight:mariadb-local": "powershell -ExecutionPolicy Bypass -File operations/official-data-preflight-mariadb-local.ps1",
+    "data:prepare-official": "node --env-file-if-exists=.env operations/prepare-official-data.js",
+    "data:configure-institution": "powershell -ExecutionPolicy Bypass -File operations/configure-institution.ps1",
+    "db:setup": "node --env-file-if-exists=.env database/setup-mariadb.js",
+    "db:backup": "node --env-file-if-exists=.env operations/backup-mariadb.js",
+    "db:audit": "node --env-file-if-exists=.env operations/audit-database.js",
+    "db:audit-readonly": "node --env-file-if-exists=.env operations/audit-database.js",
+    "db:remove-qr-test-data": "node --env-file-if-exists=.env operations/remove-qr-test-data.js",
+    "db:restore-test": "node --env-file-if-exists=.env operations/restore-mariadb-test.js",
+    "db:reset-test-users": "node --env-file-if-exists=.env operations/reset-test-users.js",
+    "db:mariadb-verify": "powershell -ExecutionPolicy Bypass -File operations/verify-mariadb-local.ps1",
+    "db:mariadb-setup": "powershell -ExecutionPolicy Bypass -File operations/setup-mariadb-local.ps1",
+    "db:mariadb-configure-app-user": "powershell -ExecutionPolicy Bypass -Command \". ./operations/mariadb-local-common.ps1; Start-SigaMariaDbLocal; Initialize-SigaMariaDbLocalAppUser\"",
+    "db:mariadb-backup": "node --env-file-if-exists=.env operations/backup-mariadb.js",
+    "db:mariadb-restore-test": "node --env-file-if-exists=.env operations/restore-mariadb-test.js",
+    "db:mariadb-backup-local": "powershell -ExecutionPolicy Bypass -File operations/backup-mariadb-local.ps1",
+    "db:mariadb-restore-test-local": "powershell -ExecutionPolicy Bypass -File operations/restore-mariadb-test-local.ps1",
+    "db:mariadb-install-backup-task": "powershell -ExecutionPolicy Bypass -File operations/install-mariadb-backup-task.ps1",
+    "db:mariadb-repair-xampp-aria": "powershell -ExecutionPolicy Bypass -File operations/repair-xampp-mariadb-aria.ps1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "compression": "^1.8.1",
     "exceljs": "^4.4.0",
     "express": "5.3.0",
-    "mssql": "^12.7.10",
+    "mysql2": "^3.15.3",
     "multer": "^2.4.0",
     "pdfkit": "^0.20.2",
     "qrcode": "^1.5.4"
   },
   "overrides": {
     "uuid": "11.1.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
   }
 }

@@ -1,84 +1,55 @@
-# SQL Server para SIGA
+# Base de datos MariaDB/MySQL de SIGA
 
-Esta carpeta contiene la base de datos SQL Server y el adaptador de persistencia del backend.
+SIGA utiliza exclusivamente MariaDB/MySQL para la persistencia institucional. El modo `json` existe solo para pruebas automatizadas aisladas.
 
-## Contenido
+## Esquema
 
-- `01-create-database.sql`: crea la base de datos y habilita lecturas consistentes.
-- `02-schema.sql`: crea tablas, relaciones, restricciones, índices y vistas.
-- `03-seed-catalogs.sql`: registra los siete roles y los cuatro programas iniciales.
-- `04-verify.sql`: comprueba la instalación.
-- `05-sync-relational.sql`: sincroniza el estado operativo con las tablas relacionales principales.
-- `backup.ps1`: crea una copia con checksum, la verifica y aplica retención.
-- `setup.ps1`: ejecuta todos los scripts en el orden correcto.
-- `sqlserver-store.js`: conecta Node.js con SQL Server sin guardar credenciales en el código.
+Los archivos vigentes están en `database/mariadb/`:
 
-## Crear la base de datos
+- `01-create-database.sql`: crea la base local de XAMPP.
+- `02-schema.sql`: crea y protege `estado_aplicacion`.
+- `03-relational-schema.sql`: crea las 28 tablas y dos vistas de dominio.
 
-Abra PowerShell desde la raíz del proyecto y use el nombre real de su instancia:
+En cPanel cree primero la base y el usuario desde el panel. Después importe `02-schema.sql` y `03-relational-schema.sql` dentro de la base seleccionada. No use `01-create-database.sql` en cPanel porque el proveedor asigna nombres con prefijo.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\database\setup.ps1 -ServerInstance ".\SQLEXPRESS"
-```
+## Configuración
 
-Para una instancia predeterminada puede usar `localhost`. Si usa autenticación SQL, defina primero las credenciales en variables de entorno y agregue `-UseSqlAuthentication`:
+Defina `SIGA_STORAGE=mariadb` y las variables `SIGA_MARIADB_*` de `.env.example`. La aplicación debe usar un usuario exclusivo con acceso solamente a la base de SIGA; no utilice `root`.
+
+En XAMPP puede preparar y verificar el entorno con:
 
 ```powershell
-$env:SIGA_SQL_USER = "siga_app"
-$env:SIGA_SQL_PASSWORD = "una-contraseña-segura"
-powershell -ExecutionPolicy Bypass -File .\database\setup.ps1 -ServerInstance "localhost" -UseSqlAuthentication
+npm run db:mariadb-setup
+npm run db:mariadb-verify
+npm run start:mariadb-local
 ```
 
-## Activar SQL Server en el backend
+Cada escritura actualiza `estado_aplicacion` y la proyección relacional dentro de la misma transacción InnoDB. Si una tabla no puede sincronizarse, se revierte toda la operación.
 
-Copie `.env.example` como referencia y defina las variables en la terminal o en el administrador de secretos del servidor. `npm start` carga `.env` mediante la opción nativa de Node.js; el archivo está excluido de Git y nunca debe compartirse.
+## Auditoría y datos oficiales
+
+Antes de cargar datos oficiales ejecute:
 
 ```powershell
-$env:SIGA_STORAGE = "sqlserver"
-$env:SIGA_SQL_SERVER = "localhost"
-$env:SIGA_SQL_DATABASE = "SIGA"
-$env:SIGA_SQL_USER = "siga_app"
-$env:SIGA_SQL_PASSWORD = "una-contraseña-segura"
-npm start
+npm run db:audit
+npm run data:preflight
 ```
 
-También puede definir `SIGA_SQL_CONNECTION_STRING` y omitir los parámetros separados.
+La auditoría comprueba las 28 tablas, las dos vistas, conteos, relaciones, huérfanos, duplicados y coherencia con el estado lógico.
 
-### Configuración local automatizada
-
-Para la instancia local `SIGA2025`, habilite TCP/IP en el Administrador de configuración de SQL Server, asigne `1433` a `IPAll` y reinicie el servicio. Después ejecute:
+## Respaldo y restauración
 
 ```powershell
-npm run db:enable-tcp
-npm run db:configure-app -- -ServerInstance ".\SIGA2025"
+npm run db:mariadb-backup
+npm run db:mariadb-restore-test
 ```
 
-`db:enable-tcp` requiere abrir PowerShell o Visual Studio Code como Administrador.
+El respaldo incluye SHA-256 y cifrado. La prueba de restauración crea una base temporal, valida el esquema y la integridad, y después elimina únicamente esa base temporal.
 
-El comando crea un inicio de sesión exclusivo `siga_app`, le concede acceso al estado compatible y al procedimiento de sincronización, valida la conexión TCP y genera un `.env` privado con contraseña SQL y secreto de sesión aleatorios. No use la cuenta `sa` desde la aplicación.
-
-## Estrategia de migración
-
-El backend conserva un estado compatible para no romper la lógica validada de los siete roles. En la misma transacción, `dbo.SincronizarEstadoRelacional` actualiza programas, usuarios, roles, preferencias, personal, estudiantes, vínculos familiares, clases, matrículas y asistencia. `dbo.EstadoAplicacion` permanece como respaldo de compatibilidad durante la migración gradual de los módulos restantes.
-
-Cada escritura espera la confirmación de SQL Server antes de responder y compara `FechaActualizacion` para impedir que dos procesos sobrescriban silenciosamente el trabajo del otro.
-
-El modo predeterminado continúa siendo `json`, por lo que las pruebas automatizadas y una instalación de desarrollo siguen funcionando sin SQL Server.
-
-## Seguridad
-
-- No escriba usuarios ni contraseñas reales dentro de los archivos del proyecto.
-- Use un usuario SQL exclusivo para SIGA y conceda únicamente permisos sobre la base `SIGA`.
-- En producción use `SIGA_SQL_ENCRYPT=true` y `SIGA_SQL_TRUST_CERTIFICATE=false`, con un certificado cuyo nombre coincida con el servidor y cuya autoridad sea confiable para el equipo que ejecuta SIGA.
-- Mantenga respaldos periódicos y restrinja el acceso a evidencias y fotografías.
-
-## Copia verificada
-
-Ejecute desde una consola con permisos administrativos de SQL Server:
+Para ejecutar instalación, verificación, respaldo, restauración, QA y prevalidación local en una sola operación:
 
 ```powershell
-npm run db:backup -- -ServerInstance ".\SIGA2025" -RetentionDays 30
+npm run qa:local-complete
 ```
 
-La copia se crea en el directorio predeterminado de SQL Server, se valida con `RESTORE VERIFYONLY` y elimina únicamente copias `SIGA-*.bak` más antiguas que la retención indicada.
-
+No elimine `SIGA_DATA_ENCRYPTION_KEY` cuando existan datos cifrados. No almacene contraseñas reales dentro del código o del repositorio.

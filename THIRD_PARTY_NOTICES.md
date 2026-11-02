@@ -7,7 +7,6 @@ Las dependencias directas instaladas y revisadas el 25 de octubre de 2026 usan l
 | compression | 1.8.2 | MIT |
 | exceljs | 4.4.0 | MIT |
 | express | 5.3.0 | MIT |
-| mssql | 12.7.10 | MIT |
 | multer | 2.4.0 | MIT |
 | pdfkit | 0.20.2 | MIT |
 | qrcode | 1.5.4 | MIT |

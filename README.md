@@ -21,22 +21,18 @@ Si estaba abierta una versión anterior, detenga el servidor con `Ctrl + C`, vue
 
 > `npm install` y `npm start` son dos comandos separados. Ejecute el primero, espere a que termine y después ejecute el segundo.
 
-## Base de datos SQL Server
+## Base de datos MariaDB/MySQL
 
-SIGA admite dos proveedores de persistencia:
+SIGA utiliza MariaDB/MySQL como almacenamiento institucional. El modo `json` se conserva únicamente para pruebas automatizadas aisladas.
 
-- `json`: modo local predeterminado para desarrollo y pruebas.
-- `sqlserver`: modo institucional con almacenamiento transaccional en Microsoft SQL Server.
-
-Para crear o actualizar el esquema SQL Server desde PowerShell sin borrar los datos:
+Para preparar y verificar MariaDB local con XAMPP:
 
 ```powershell
-npm run db:setup -- -ServerInstance ".\SIGA2025"
+npm run db:mariadb-setup
+npm run db:mariadb-verify
 ```
 
-Después configure `SIGA_STORAGE=sqlserver` y las variables `SIGA_SQL_SERVER`, `SIGA_SQL_DATABASE`, `SIGA_SQL_USER` y `SIGA_SQL_PASSWORD` antes de ejecutar `npm start`. Consulte [database/README.md](database/README.md) y `.env.example`; las credenciales reales nunca deben guardarse dentro del repositorio.
-
-En producción, SQL Server debe presentar un certificado válido y la aplicación debe usar `SIGA_SQL_ENCRYPT=true` y `SIGA_SQL_TRUST_CERTIFICATE=false`. El valor `true` para confiar en el certificado se admite únicamente como excepción temporal en una instalación local sin PKI institucional.
+Configure `SIGA_STORAGE=mariadb` y las variables `SIGA_MARIADB_*` descritas en [.env.example](.env.example). En cPanel use el nombre de base y usuario con el prefijo asignado por el proveedor. Las credenciales reales nunca deben guardarse dentro del repositorio.
 
 ## Acceso y datos de demostración
 
@@ -153,8 +149,8 @@ public/
 - Los módulos Estudiante, Padre o apoderado y Vigilante consultan información real del servidor y respetan su alcance de datos.
 - La corrección de asistencia docente rechaza fechas futuras y registros fuera del periodo permitido de siete días.
 - Las tablas se convierten en fichas legibles en celular y los controles mantienen tamaños táctiles accesibles.
-- Persistencia configurable: SQL Server para la instalación institucional y `data/siga.json` para desarrollo o pruebas locales.
-- SQL Server confirma cada escritura antes de responder al usuario, detecta conflictos entre instancias y sincroniza programas, usuarios, roles, personal, estudiantes, vínculos, clases, matrículas y asistencia con el esquema relacional.
+- Persistencia institucional en MariaDB/MySQL, con transacciones, control de revisión y sincronización relacional incremental; `data/siga.json` queda limitado a pruebas aisladas.
+- MariaDB modifica únicamente las filas que cambian, elimina siempre por clave y cifra el estado, los datos identificativos proyectados y los archivos privados cuando se configura `SIGA_DATA_ENCRYPTION_KEY`.
 - Las sesiones están firmadas con HMAC, sobreviven a reinicios cuando se conserva `SIGA_SESSION_SECRET` y se invalidan por versión al cambiar contraseñas o desactivar cuentas.
 - Los recursos estáticos usan compresión, ETag y caché; las API, páginas privadas y respuestas de salud mantienen `no-store`.
 - El modo JSON conserva escritura protegida con archivo temporal y respaldo para carpetas de Windows que bloquean el renombrado.
@@ -170,8 +166,8 @@ npm test
 
 ## Publicación y operación
 
-SIGA rechaza el arranque en modo producción si detecta SQL Server sin validación de certificado, proxy HTTPS no declarado, secretos de ejemplo, datos legales incompletos o falta de motor antimalware. Complete `.env.example`, proteja `.env` y ejecute `npm run production:preflight` antes de cada despliegue.
+SIGA rechaza el arranque en modo producción si detecta MariaDB con usuario `root`, proxy HTTPS no declarado, secretos de ejemplo, datos legales incompletos o falta de motor antimalware. Complete las variables del hosting, proteja sus secretos y ejecute `npm run production:preflight` antes de cada despliegue.
 
-La carpeta `deployment/` contiene el proxy HTTPS de referencia, supervisión de proceso, procedimiento de publicación y rollback. `database/install-backup-task.ps1` instala el respaldo diario con copia externa obligatoria; `database/restore-test.ps1` realiza una restauración completa temporal y `DBCC CHECKDB`. `operations/` contiene monitoreo HTTPS e intervención ante incidentes.
+La carpeta `deployment/` contiene la guía específica de cPanel, el proxy de referencia para VPS y el procedimiento de rollback. Para MariaDB local, `db:mariadb-backup-local` genera una copia con SHA-256 y `db:mariadb-restore-test-local` la restaura en una base temporal y deja evidencia verificable.
 
 La publicación definitiva todavía requiere que la institución proporcione dominio, certificado, datos legales, canal de privacidad, almacenamiento externo, motor antimalware y responsables de soporte reales. Esos datos no deben inventarse ni almacenarse en el repositorio.

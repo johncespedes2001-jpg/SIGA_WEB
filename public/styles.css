@@ -2160,9 +2160,68 @@ body.theme-dark :where(button,a,input,select,textarea,[tabindex]):focus-visible{
 @media (prefers-reduced-motion:reduce){.picker-tools *, .class-student-picker > label{transition:none!important;animation:none!important}}
 .class-dialog .class-student-picker .class-student-copy small{font-size:.875rem!important;line-height:1.45}
 
+/* Directorio de personal: evita que roles y programas se monten entre columnas. */
+.staff-manager-panel .staff-table-wrap{overflow-x:auto;overflow-y:hidden;scrollbar-gutter:stable}
+.staff-manager-panel .staff-directory-table{min-width:1335px;table-layout:fixed}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(1){width:86px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(2){width:252px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(3){width:138px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(4){width:184px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(5){width:270px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(6){width:128px}
+.staff-manager-panel .staff-directory-table :is(th,td):nth-child(7){width:277px}
+.staff-directory-table .personnel-role-cell,.staff-directory-table .personnel-program-cell{min-width:0;vertical-align:middle}
+.personnel-role-stack{display:flex;min-width:0;flex-direction:column;align-items:flex-start;gap:6px}
+.staff-directory-table .personnel-role{box-sizing:border-box;max-width:100%;width:fit-content;min-width:0;white-space:normal;overflow-wrap:anywhere;line-height:1.25}
+.staff-directory-table .additional-role-badge{box-sizing:border-box;max-width:100%;width:fit-content;min-width:0;margin:0!important;font-size:.75rem!important;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+.staff-directory-table .personnel-program{max-width:none;color:#4d5e78;font-size:.8125rem!important;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+body.theme-dark .staff-directory-table .personnel-program{color:#c7d4e7}
+@media (max-width:700px){
+  .staff-manager-panel .staff-table-wrap{overflow:visible}
+  .staff-manager-panel .staff-directory-table{min-width:0;table-layout:auto}
+  .staff-manager-panel .staff-directory-table :is(th,td):nth-child(n){width:auto}
+  .staff-directory-table .personnel-role-stack{align-items:flex-start}
+}
+
 /* Accesibilidad de navegación y resumen de vínculos. */
 .sidebar :where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #b3d8ff!important;outline-offset:3px!important}
 .picker-selection ul{display:grid;gap:5px;margin:8px 0 0;padding-left:20px;color:var(--ink);font-size:.875rem;line-height:1.45}
 .picker-selection li{overflow-wrap:anywhere}
 @media (forced-colors:active){:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid Highlight!important;outline-offset:3px!important}}
-.student-access-manual{display:grid;gap:7px;margin-top:16px;min-width:0}.student-access-manual label{font-weight:800}.student-access-manual textarea{width:100%;min-height:88px;resize:vertical;overflow-wrap:anywhere;font:inherit}.student-access-manual p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.5}
+/* Código diario: mantiene íntegro el valor firmado para escanear o copiar. */
+.student-access-manual{min-width:0;margin-top:20px;overflow:hidden;border:1px solid #cedcf0;border-radius:16px;background:#fff;box-shadow:0 4px 16px rgba(15,40,78,.08)}
+.student-access-manual-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:#142d52;color:#fff}
+.student-access-manual-title{display:flex;align-items:center;gap:12px;min-width:0}
+.student-access-manual-title .ui-icon{width:27px;height:27px;flex-shrink:0;color:#79aaff}
+.student-access-manual-title label{color:#fff;font-size:1rem;font-weight:800;line-height:1.3}
+.student-access-ready{flex-shrink:0;padding:6px 11px;border-radius:999px;background:#254b5a;color:#b5f3d7;font-size:.75rem;font-weight:750}
+.student-access-ready::before{content:'';display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#77d7aa}
+.student-access-manual-body{display:grid;gap:12px;padding:16px}
+.student-access-code-bar{display:flex;align-items:center;gap:12px;padding:12px;background:#0d1c36;border-radius:12px;min-width:0}
+.student-access-code-bar textarea{display:block;flex:1;min-width:0;width:100%;min-height:88px;resize:vertical;padding:10px;border:0;border-radius:8px;background:#0d1c36!important;color:#fff;font-family:Consolas,monospace;font-size:.8rem;line-height:1.5;overflow-wrap:anywhere;word-break:break-all}
+.student-access-copy{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;min-height:46px;padding:11px 15px;border:0;border-radius:10px;background:#195eea;color:#fff;font:inherit;font-size:.83rem;font-weight:800;cursor:pointer}
+.student-access-copy:hover{background:#104bc0}.student-access-copy .ui-icon{width:18px;height:18px}.student-access-copy:focus-visible,.student-access-code-bar textarea:focus-visible{outline:3px solid #8bbfff;outline-offset:2px}
+.student-access-manual .student-access-copy-status{display:flex;align-items:flex-start;gap:8px;margin:0;padding:11px 13px;border-radius:10px;background:#eaf2fd;color:#294b7b;font-size:.8rem;line-height:1.5}
+.student-access-copy-status .ui-icon{width:17px;height:17px;flex-shrink:0;color:#195eea}
+body.theme-dark .student-access-manual{background:#15243d;border-color:#435879}body.theme-dark .student-access-copy-status{background:#263c5e;color:#e0edff}
+@media(max-width:600px){.student-access-manual-heading{align-items:flex-start;flex-direction:column;padding:15px}.student-access-manual-body{padding:12px}.student-access-code-bar{align-items:stretch;flex-direction:column}.student-access-copy{width:100%}}
+.student-access-info{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:18px;height:18px;border:2px solid #195eea;border-radius:50%;color:#195eea;font-size:12px;font-weight:800;line-height:1}
+
+.student-access-code-bar textarea:focus,body.theme-dark .student-access-code-bar textarea:focus{background:#0d1c36!important;color:#fff!important}
+
+/* Prevención de desplazamiento horizontal en vistas de auditoría. */
+@media (max-width:1450px){
+  .report-filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:850px){
+  .guard-access-actions.unified .guard-entry-qr-layout{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .report-filters{grid-template-columns:minmax(0,1fr)}
+  .report-filters>*{min-width:0;max-width:100%}
+  .family-justification-layout,.family-justification-layout>*{min-width:0;max-width:100%}
+  .family-justification-layout .family-form-panel{width:100%;box-sizing:border-box}
+  .family-justification-layout .account-form,.family-justification-layout .account-form>*{min-width:0;max-width:100%}
+  .family-justification-layout :is(input,select,textarea){box-sizing:border-box;min-width:0;max-width:100%}
+}
+.report-filters :is(input,select){width:100%;min-width:0;box-sizing:border-box}

@@ -7,6 +7,7 @@ const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '..', 'public');
 const evidenceDir = process.env.SIGA_VISUAL_EVIDENCE_DIR;
 const program = 'Mecatrónica Automotriz';
+const testAccessCode = 'SIGA-ACCESS.' + 'eyJzdHVkZW50SWQiOiJFU1QtMDAzIiwiZGF0ZSI6IjIwMjYtMTAtMjcifQ.' + 'EjemploFirmaFicticiaDePruebaConTextoLargo0123456789';
 const students = [
   { id: 'T-1', name: 'Ana García Prueba', document: '12345678', program, semester: 'I', group: 'I-A', state: 'Activo' },
   { id: 'T-2', name: 'Luis Prueba', document: '87654321', program, semester: 'I', group: 'I-A', state: 'Activo' },
@@ -18,9 +19,18 @@ const users = {
   estudiante: { id: 'E-1', name: 'Estudiante Prueba', role: 'estudiante', roles: ['estudiante'], csrf: 'test' },
 };
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.png': 'image/png' };
+async function launchBrowser() {
+  const options = { headless: true, args: ['--no-sandbox', '--disable-gpu'] };
+  try { return await chromium.launch(options); }
+  catch (error) {
+    const chrome = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+    if (!fs.existsSync(chrome)) throw error;
+    return chromium.launch({ ...options, executablePath: chrome });
+  }
+}
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', headless: true, args: ['--no-sandbox', '--disable-gpu'] });
+  const browser = await launchBrowser();
   const findings = [];
   const context = await browser.newContext({ viewport: { width: 1366, height: 768 }, reducedMotion: 'reduce' });
   let role = 'administrador';
@@ -32,7 +42,7 @@ const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
       if (url.pathname === '/api/session') body = { user: users[role] };
       else if (url.pathname === '/api/notifications') body = { unread: 0, items: [] };
       else if (url.pathname === '/api/student/exits') body = { items: [] };
-      else if (url.pathname === '/api/student/access-qr') body = { code: 'SIGA-ACCESS.codigo-ficticio.prueba-firmada', validDate: '2026-10-27', student: { name: 'Estudiante Prueba', program } };
+      else if (url.pathname === '/api/student/access-qr') body = { code: testAccessCode, validDate: '2026-10-27', student: { name: 'Estudiante Prueba', program } };
       else if (url.pathname === '/api/student/access-qr.svg') return route.fulfill({ status: 200, contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>' });
       else if (url.pathname === '/api/admin/family-links') body = { parents, students };
       else if (url.pathname === '/api/coordinator/classes') body = { items: [], teachers: [{ id: 'D-1', name: 'Docente Prueba' }], students, program, policies: {} };
@@ -142,17 +152,32 @@ const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css
   if (evidenceDir) await page.screenshot({ path: path.join(evidenceDir, '03-matricula-escritorio.png'), fullPage: true });
 
   role = 'estudiante';
+  await page.evaluate(() => localStorage.setItem('siga_theme', 'light'));
   for (const width of [320, 375, 1366]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto('http://siga-test.invalid/pages/estudiante/qr-salida.html');
     const manualCode = page.locator('#student-access-manual-code');
     await manualCode.waitFor();
-    assert.equal(await manualCode.inputValue(), 'SIGA-ACCESS.codigo-ficticio.prueba-firmada');
+    assert.equal(await manualCode.inputValue(), testAccessCode);
     assert.equal(await manualCode.getAttribute('readonly'), '');
-    assert.equal(await page.locator('label[for="student-access-manual-code"]').innerText(), 'Código para ingreso manual');
+    const colors = await manualCode.evaluate((field) => ({ background: getComputedStyle(field).backgroundColor, color: getComputedStyle(field).color }));
+    assert.deepEqual(colors, { background: 'rgb(13, 28, 54)', color: 'rgb(255, 255, 255)' }, 'El código debe contrastar en tema claro');
+    await manualCode.focus();
+    const focusColors = await manualCode.evaluate((field) => ({ background: getComputedStyle(field).backgroundColor, color: getComputedStyle(field).color }));
+    assert.deepEqual(focusColors, colors, 'El foco no debe ocultar el código');
+    assert.equal(await page.locator('label[for="student-access-manual-code"]').innerText(), 'Código de acceso temporal');
+    await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.testCopiedCode = value; } } }));
+    await page.locator('#student-access-copy').click();
+    assert.equal(await page.evaluate(() => window.testCopiedCode), testAccessCode);
+    assert.match(await page.locator('#student-access-copy-status').innerText(), /Código copiado/);
+    await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined }));
+    await page.locator('#student-access-copy').click();
+    assert.match(await page.locator('#student-access-copy-status').innerText(), /Código seleccionado/);
+    assert.equal(await manualCode.evaluate((field) => field.selectionEnd - field.selectionStart), testAccessCode.length);
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'La credencial desborda en ' + width);
   }
   findings.push({ section: 'Código diario', result: 'Código completo visible y seleccionable en 320, 375 y 1366 px' });
+  if (evidenceDir) await page.screenshot({ path: path.join(evidenceDir, '04-codigo-diario.png'), fullPage: true });
   assert.deepEqual(errors, []);
   await browser.close();
   console.log(JSON.stringify({ ok: true, findings }, null, 2));

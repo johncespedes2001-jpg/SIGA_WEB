@@ -1,10 +1,14 @@
 .env*
 .github/
 .vscode/
+.codex-sheet-audit/
+.playwright-browsers/
 backups/
 data/
 informe_trabajo/
+logs/
 outputs/
+release/
 tests/
 tmp/
 *.docx
@@ -15,3 +19,4 @@ Untitled-1.js
 templates/.*.tmp*
 public/assets/images/siga-login-hero.png
 npm-debug.log*
+siga-web-*.tgz

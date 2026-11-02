@@ -34,13 +34,14 @@ const programs = [
   'Mecatrónica Automotriz',
   'Arquitectura de Plataformas y Servicios de Tecnologías de Información',
 ];
+const teacherImportPrograms = [...programs, 'Empleabilidad'];
 
 const templates = [
   {
     filename: 'SIGA_plantilla_apoderados.xlsx',
     sheetName: 'Importar apoderados',
-    headers: ['Tipo de documento', 'Documento', 'Nombres', 'Apellidos', 'Correo', 'Programa de estudios', 'Usuario', 'Contraseña inicial', 'Estado'],
-    validations: { A7: ['DNI', 'CE'], F7: programs, I7: ['Activo', 'Inactivo'] },
+    headers: ['Tipo de documento', 'Documento', 'Nombres', 'Apellidos', 'Correo', 'Usuario', 'Contraseña inicial', 'Estado', 'Documento del estudiante', 'Nombre del estudiante', 'Programa de estudios', 'Semestre', 'Parentesco o vínculo'],
+    validations: { A7: ['DNI', 'CE'], H7: ['Activo', 'Inactivo'], K7: programs, L7: ['I', 'II', 'III', 'IV', 'V', 'VI'], M7: ['Madre', 'Padre', 'Apoderado', 'Tutor legal', 'Familiar autorizado'] },
   },
   {
     filename: 'SIGA_plantilla_administradores.xlsx',
@@ -58,7 +59,7 @@ const templates = [
     filename: 'SIGA_plantilla_docentes.xlsx',
     sheetName: 'Importar docentes',
     headers: ['Tipo de documento', 'Documento', 'Nombres', 'Apellidos', 'Correo', 'Programa de estudios', 'Función de tutor', 'Usuario', 'Contraseña inicial', 'Estado'],
-    validations: { A7: ['DNI', 'CE'], F7: programs, G7: ['Sí', 'No'], J7: ['Activo', 'Inactivo'] },
+    validations: { A7: ['DNI', 'CE'], F7: teacherImportPrograms, G7: ['Sí', 'No'], J7: ['Activo', 'Inactivo'] },
   },
   {
     filename: 'SIGA_plantilla_vigilantes.xlsx',
@@ -92,6 +93,11 @@ for (const definition of templates) {
     assert.match(String(sheet.getCell('A4').value), /Usuario: 3 a 64 caracteres/);
     assert.match(String(sheet.getCell('A4').value), /Contraseña: mínimo 10 caracteres/);
     assert.equal(sheet.views[0].ySplit, 6);
+
+    if (definition.filename === 'SIGA_plantilla_apoderados.xlsx') {
+      assert.match(String(sheet.getCell('A3').value), /documento, nombre, programa y semestre del estudiante/i);
+      assert.equal(sheet.getRow(6).values.slice(1).includes('Documentos de estudiantes vinculados'), false);
+    }
 
     for (const [address, expectedValues] of Object.entries(definition.validations)) {
       assert.deepEqual(validationValues(sheet.getCell(address)), expectedValues);

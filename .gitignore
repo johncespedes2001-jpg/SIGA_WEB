@@ -5,3 +5,8 @@ npm-debug.log*
 data/
 *.bak
 backups/
+.playwright-browsers/
+outputs/
+release/
+tmp/
+siga-web-*.tgz

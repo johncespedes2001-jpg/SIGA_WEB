@@ -4,8 +4,8 @@ SIGA debe publicarse detrás de un proxy HTTPS. Node escucha únicamente en `127
 
 ## Requisitos
 
-- Node.js 22 LTS o una versión LTS posterior compatible con `package.json`.
-- SQL Server con certificado emitido por una autoridad confiable y nombre DNS coincidente.
+- Node.js 20 LTS o una versión LTS posterior compatible con `package.json`.
+- MariaDB 10.4 o posterior, o MySQL compatible, con una base y un usuario exclusivo para SIGA.
 - Proxy HTTPS (IIS, Nginx o equivalente) con renovación automática del certificado.
 - ClamAV, Microsoft Defender CLI u otro motor que devuelva código 0 solo para archivos limpios.
 - Almacenamiento externo separado para respaldos.
@@ -18,8 +18,8 @@ SIGA debe publicarse detrás de un proxy HTTPS. Node escucha únicamente en `127
 4. Cree `.env` desde `.env.example` y reemplace todos los valores `CAMBIAR` o de ejemplo.
 5. Proteja `.env` para que solo Administradores, SYSTEM y la cuenta del servicio puedan leerlo.
 6. Ejecute `npm run check` y la suite de pruebas en staging.
-7. Configure el proxy; el ejemplo Nginx está en esta carpeta. En IIS use URL Rewrite y ARR con `X-Forwarded-Proto: https`.
-8. Inicie una sola instancia con PM2: `pm2 start deployment/ecosystem.config.cjs` y `pm2 save`.
+7. En cPanel siga `deployment/CPANEL.md`. En un VPS configure el proxy; el ejemplo Nginx está en esta carpeta.
+8. En cPanel reinicie la aplicación Node.js desde el panel. En un VPS inicie una sola instancia con PM2.
 9. Compruebe `/health`, la redirección HTTP a HTTPS, HSTS y la cookie `Secure`.
 10. Instale las tareas de respaldo y monitoreo y realice una restauración completa.
 11. Archive la aprobación de los activos institucionales y revise `THIRD_PARTY_NOTICES.md`.
@@ -30,6 +30,6 @@ Ejecute `k6 run -e SIGA_BASE_URL=https://dominio-institucional operations/k6-hea
 
 ## Rollback
 
-Mantenga dos carpetas de versión (`releases/anterior` y `releases/actual`) y un enlace o ruta activa. Antes de publicar, respalde SQL Server y conserve el paquete anterior. Si falla una prueba crítica, detenga SIGA, apunte el proxy/proceso a la versión anterior, restaure la base únicamente si la migración modificó datos incompatibles y documente el incidente.
+Mantenga el paquete anterior. Antes de publicar, exporte MariaDB y conserve esa copia fuera del servidor. Si falla una prueba crítica, detenga SIGA, restaure el paquete anterior y restaure la base únicamente si la migración modificó datos incompatibles.
 
-No use `SIGA_SQL_TRUST_CERTIFICATE=true` ni desactive los controles de arranque para resolver errores de certificados.
+No use `root` como usuario de la aplicación ni desactive los controles de arranque para resolver errores de configuración.

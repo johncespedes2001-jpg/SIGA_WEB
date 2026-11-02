@@ -9,7 +9,7 @@ const ExcelJS = require('exceljs');
 
 const testDataDirectory = fs.mkdtempSync(path.join(os.tmpdir(), 'siga-test-'));
 process.env.SIGA_DATA_DIR = testDataDirectory;
-// La suite siempre usa un almacén temporal: nunca debe consumir ni modificar SQL Server real.
+// La suite siempre usa un almacén temporal: nunca debe consumir ni modificar MariaDB real.
 process.env.SIGA_STORAGE = 'json';
 process.env.SIGA_INSTITUTION_START = '00:00';
 process.env.SIGA_INSTITUTION_END = '23:59';
@@ -821,7 +821,15 @@ for (const [index, profile] of staffRegistrationProfiles.entries()) {
     const workbook=new ExcelJS.Workbook(); await workbook.xlsx.load(Buffer.from(await template.arrayBuffer()));
     const sheet=workbook.worksheets[0]; const common=['DNI',String(88100000+index),'Nombre','Ficticio',`excel.${profile.key}@example.test`];
     const suffix=[`excel.${profile.key}`,'PruebaSegura2026!','Activo'];
-    const row=profile.role==='Docente'?[...common,'Mecatrónica Automotriz','Sí',...suffix]:profile.role==='Vigilante'?[...common,...suffix,'Mañana']:profile.institutional?[...common,...suffix]:[...common,'Mecatrónica Automotriz',...suffix];
+    const row=profile.role==='Docente'
+      ? [...common,'Mecatrónica Automotriz','Sí',...suffix]
+      : profile.role==='Vigilante'
+        ? [...common,...suffix,'Mañana']
+        : profile.role==='Padre o apoderado'
+          ? [...common,...suffix,'72459631','Diego Mendoza Ruiz','Mecatrónica Automotriz','II','Padre']
+          : profile.institutional
+            ? [...common,...suffix]
+            : [...common,'Mecatrónica Automotriz',...suffix];
     sheet.getRow(7).values=row;
     const upload=async()=>{const form=new FormData();form.append('file',new Blob([await workbook.xlsx.writeBuffer()],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'prueba.xlsx');return request(admin,`/api/admin/import/${profile.type}`,{method:'POST',body:form});};
     const imported=await upload(); assert.equal(imported.status,200,`${profile.role}: ${await imported.clone().text()}`); assert.equal((await imported.json()).imported,1);

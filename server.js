@@ -12,11 +12,14 @@ const multer = require('multer');
 const ExcelJS = require('exceljs');
 const PDFDocument = require('pdfkit');
 const QRCode = require('qrcode');
-const { openSqlServerStore } = require('./database/sqlserver-store');
+const { openConfiguredStore } = require('./database/store');
+const { dataEncryptionKey, encryptBuffer, decryptBuffer } = require('./database/data-protection');
 const { unitsForProgramSemester, planForProgram } = require('./study-plan-catalog');
 
 const app = express();
 const preferredPort = Number(process.env.PORT) || 3000;
+// 0.0.0.0 escucha en todas las interfaces locales. Así SIGA no depende de
+// una IP que puede cambiar al conectar otra red o reiniciar el equipo.
 const bindHost = String(process.env.SIGA_BIND_HOST || '127.0.0.1').trim();
 const publicDirectory = path.join(__dirname, 'public');
 const dataDirectory = process.env.SIGA_DATA_DIR ? path.resolve(process.env.SIGA_DATA_DIR) : path.join(__dirname, 'data');
@@ -31,9 +34,9 @@ const databasePath = path.join(dataDirectory, 'siga.json');
 const securityStatePath = path.join(dataDirectory, 'security-state.json');
 const usageMetricsPath = path.join(dataDirectory, 'usage-metrics.json');
 const storageProvider = String(process.env.SIGA_STORAGE || 'json').trim().toLowerCase();
-if (!['json', 'sqlserver'].includes(storageProvider)) throw new Error('SIGA_STORAGE debe ser json o sqlserver.');
-let sqlServerStore = null;
-let sqlSaveQueue = Promise.resolve();
+if (!['json', 'mariadb'].includes(storageProvider)) throw new Error('SIGA_STORAGE debe ser json o mariadb.');
+let databaseStore = null;
+let persistentSaveQueue = Promise.resolve();
 const requestContext = new AsyncLocalStorage();
 const revokedSessions = new Map();
 const loginAttempts = new Map();
@@ -58,13 +61,23 @@ function booleanEnvironment(name, fallback = false) {
 function productionConfigurationErrors() {
   if (process.env.NODE_ENV !== 'production') return [];
   const errors = [];
-  if (storageProvider !== 'sqlserver') errors.push('SIGA_STORAGE debe ser sqlserver.');
-  if (!booleanEnvironment('SIGA_SQL_ENCRYPT', true)) errors.push('SIGA_SQL_ENCRYPT debe ser true.');
-  if (booleanEnvironment('SIGA_SQL_TRUST_CERTIFICATE', false)) errors.push('SIGA_SQL_TRUST_CERTIFICATE debe ser false.');
+  if (storageProvider !== 'mariadb') errors.push('SIGA_STORAGE debe ser mariadb.');
   if (demoMode) errors.push('SIGA_DEMO_MODE debe ser false.');
   const placeholder = (value) => /CAMBIAR|PENDIENTE|EJEMPLO|example\./i.test(String(value || ''));
   if (!String(process.env.SIGA_SESSION_SECRET || '').trim() || placeholder(process.env.SIGA_SESSION_SECRET)) errors.push('SIGA_SESSION_SECRET debe ser un secreto real definido fuera del código.');
-  if (!process.env.SIGA_SQL_CONNECTION_STRING && (!process.env.SIGA_SQL_PASSWORD || placeholder(process.env.SIGA_SQL_PASSWORD))) errors.push('SIGA_SQL_PASSWORD debe ser un secreto real.');
+  try { dataEncryptionKey(true); } catch (error) { errors.push(error.message); }
+  const retentionDays = Number(process.env.SIGA_RETENTION_DAYS);
+  if (!Number.isInteger(retentionDays) || retentionDays < 30 || retentionDays > 3650) errors.push('SIGA_RETENTION_DAYS debe ser un entero entre 30 y 3650.');
+  if (storageProvider === 'mariadb') {
+    for (const name of ['SIGA_MARIADB_HOST', 'SIGA_MARIADB_DATABASE', 'SIGA_MARIADB_USER', 'SIGA_MARIADB_PASSWORD']) {
+      if (!String(process.env[name] || '').trim() || placeholder(process.env[name])) errors.push(`${name} debe contener un valor real.`);
+    }
+    if (String(process.env.SIGA_MARIADB_USER || '').trim().toLowerCase() === 'root') errors.push('SIGA_MARIADB_USER no puede ser root en producción.');
+    const databaseHost = String(process.env.SIGA_MARIADB_HOST || '').trim().toLowerCase();
+    if (!['localhost', '127.0.0.1', '::1'].includes(databaseHost) && !booleanEnvironment('SIGA_MARIADB_SSL', false)) {
+      errors.push('SIGA_MARIADB_SSL debe ser true cuando MariaDB está en otro servidor.');
+    }
+  }
   const trustProxy = String(process.env.SIGA_TRUST_PROXY || '').trim().toLowerCase();
   if (!trustProxy || ['false', 'no', 'off', '0'].includes(trustProxy)) errors.push('SIGA_TRUST_PROXY debe identificar el proxy HTTPS confiable.');
   try {
@@ -424,14 +437,14 @@ if (fs.existsSync(databasePath)) {
 if (!Array.isArray(database.passwordRecoveryRequests)) database.passwordRecoveryRequests = [];
 if (!Array.isArray(database.securityAudit)) database.securityAudit = [];
 const saveDatabase = () => {
-  if (storageProvider === 'sqlserver') {
-    if (!sqlServerStore) return Promise.resolve();
+  if (storageProvider !== 'json') {
+    if (!databaseStore) return Promise.resolve();
     const snapshot = JSON.parse(JSON.stringify(database));
-    const operation = sqlSaveQueue
-      .then(() => sqlServerStore.save(snapshot))
+    const operation = persistentSaveQueue
+      .then(() => databaseStore.save(snapshot))
       .catch(async (error) => {
         if (error.code === 'SIGA_WRITE_CONFLICT') {
-          const latest = await sqlServerStore.load();
+          const latest = await databaseStore.load();
           if (latest) {
             database = latest;
             programs = (database.programs || []).filter((item) => item.state !== 'Inactivo').map((item) => item.name);
@@ -439,7 +452,7 @@ const saveDatabase = () => {
         }
         throw error;
       });
-    sqlSaveQueue = operation.catch((error) => {
+    persistentSaveQueue = operation.catch((error) => {
       console.error(JSON.stringify({ level: 'error', event: 'database_save_failed', message: error.message, code: error.code || '' }));
       operationalAlert('database_save_failed', { code: error.code || '' });
     });
@@ -460,6 +473,29 @@ const saveDatabase = () => {
   }
   return Promise.resolve();
 };
+
+function applyTechnicalRetention(state) {
+  const days = Number(process.env.SIGA_RETENTION_DAYS || 0);
+  if (!Number.isInteger(days) || days < 30) return false;
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  const timestamp = (item) => new Date(item?.date || item?.createdAt || item?.requestedAt || item?.sentAt || item?.updatedAt || 0).getTime();
+  const collections = ['securityAudit', 'adminAudit', 'familyAudit', 'studentAudit', 'coordinatorAudit', 'tutorAudit', 'guardAttempts', 'guardAlertReviews'];
+  let changed = false;
+  for (const collection of collections) {
+    if (!Array.isArray(state[collection])) continue;
+    const retained = state[collection].filter((item) => !Number.isFinite(timestamp(item)) || timestamp(item) >= cutoff);
+    if (retained.length !== state[collection].length) { state[collection] = retained; changed = true; }
+  }
+  if (Array.isArray(state.notifications)) {
+    const retained = state.notifications.filter((item) => !item.read || !Number.isFinite(timestamp(item)) || timestamp(item) >= cutoff);
+    if (retained.length !== state.notifications.length) { state.notifications = retained; changed = true; }
+  }
+  if (Array.isArray(state.passwordRecoveryRequests)) {
+    const retained = state.passwordRecoveryRequests.filter((item) => item.status === 'Pendiente' || !Number.isFinite(timestamp(item)) || timestamp(item) >= cutoff);
+    if (retained.length !== state.passwordRecoveryRequests.length) { state.passwordRecoveryRequests = retained; changed = true; }
+  }
+  return changed;
+}
 
 function migrateIndependentTutorAccounts() {
   let changed = false;
@@ -556,9 +592,9 @@ function normalizeStaffAccountConsistency() {
 }
 
 async function initializePersistence() {
-  if (storageProvider !== 'sqlserver') return;
-  sqlServerStore = await openSqlServerStore();
-  const storedDatabase = await sqlServerStore.load();
+  if (storageProvider === 'json') return;
+  databaseStore = await openConfiguredStore();
+  const storedDatabase = await databaseStore.load();
   if (storedDatabase) {
     database = storedDatabase;
     if (!Array.isArray(database.passwordRecoveryRequests)) database.passwordRecoveryRequests = [];
@@ -567,22 +603,27 @@ async function initializePersistence() {
     migrateIndependentTutorAccounts();
     normalizeStaffAccountConsistency();
     normalizeTutorAssignments();
+    applyTechnicalRetention(database);
     database.schemaVersion = databaseSchemaVersion;
-    await sqlServerStore.save(database);
+    await databaseStore.save(database);
   } else {
-    await sqlServerStore.save(database);
+    // MariaDB nueva debe arrancar únicamente con el administrador definido
+    // en el entorno, no con un archivo JSON de demostración que pudiera
+    // permanecer en la carpeta local del proyecto.
+    if (storageProvider === 'mariadb') database = initialDatabase();
+    await databaseStore.save(database);
   }
   programs = (database.programs || [])
     .filter((item) => item.state !== 'Inactivo')
     .map((item) => item.name);
-  console.log(`SIGA conectado a SQL Server. Esquema lógico ${database.schemaVersion || 1}.`);
+  console.log(`SIGA conectado a ${storageProvider === 'mariadb' ? 'MariaDB' : 'almacenamiento JSON temporal'}. Esquema lógico ${database.schemaVersion || 1}.`);
 }
 
 async function closePersistence() {
   persistUsageMetrics();
-  await sqlSaveQueue.catch(() => {});
-  if (sqlServerStore) await sqlServerStore.close();
-  sqlServerStore = null;
+  await persistentSaveQueue.catch(() => {});
+  if (databaseStore) await databaseStore.close();
+  databaseStore = null;
 }
 
 // Vincula registros antiguos con sus cuentas sin depender permanentemente del correo.
@@ -1030,8 +1071,15 @@ async function storeEvidence(file, directory, prefix) {
   if (!extension) return { error: 'La evidencia debe ser una imagen o un PDF válido y sin contenido activo.' };
   await scanEvidence(file.buffer);
   const filename = `${prefix}-${crypto.randomUUID()}.${extension}`;
-  await fs.promises.writeFile(path.join(directory, filename), file.buffer, { flag: 'wx', mode: 0o600 });
+  await fs.promises.writeFile(path.join(directory, filename), encryptBuffer(file.buffer), { flag: 'wx', mode: 0o600 });
   return { evidenceFile: filename, evidenceName: path.basename(file.originalname).slice(0, 120) };
+}
+
+async function sendProtectedFile(response, target) {
+  if (!fs.existsSync(target)) return response.sendStatus(404);
+  const content = decryptBuffer(await fs.promises.readFile(target));
+  response.type(path.extname(target).slice(1) || 'application/octet-stream');
+  return response.send(content);
 }
 
 function removeProfilePhoto(account) {
@@ -1049,6 +1097,13 @@ function normalizeDocumentType(value) {
 
 function normalizeDocument(value) {
   return String(value || '').trim().toUpperCase().replace(/[\s-]+/g, '');
+}
+
+function linkedStudentDocuments(value) {
+  return String(value || '')
+    .split(/[;,]/)
+    .map((document) => normalizeDocument(document))
+    .filter(Boolean);
 }
 
 function validateIdentityDocument(body) {
@@ -1079,7 +1134,10 @@ function validatePerson(body, type) {
   if (type === 'staff' && body.role === 'Docente' && normalizedHeader(body.program) === 'empleabilidad') body.program = 'Empleabilidad';
   const required = ['name', 'documentType', 'document', 'email', 'state'];
   if (type === 'student') required.push('program', 'semester');
-  if (type === 'staff') required.push('role', 'program');
+  if (type === 'staff') {
+    required.push('role');
+    if (body.role !== 'Padre o apoderado') required.push('program');
+  }
   const missing = required.filter((key) => !String(body[key] || '').trim());
   if (missing.length) return `Complete los campos: ${missing.join(', ')}.`;
   const documentError = validateIdentityDocument(body);
@@ -1087,14 +1145,14 @@ function validatePerson(body, type) {
   if (!/^\S+@\S+\.\S+$/.test(body.email)) return 'Ingrese un correo válido.';
   if (!states.includes(body.state)) return 'El estado debe ser Activo o Inactivo.';
   const transversalTeacher = type === 'staff' && body.role === 'Docente' && body.program === 'Empleabilidad';
-  if (body.program !== 'Institucional' && !transversalTeacher && !programs.includes(body.program)) return 'Seleccione un programa de estudios válido.';
+  if (body.role !== 'Padre o apoderado' && body.program !== 'Institucional' && !transversalTeacher && !programs.includes(body.program)) return 'Seleccione un programa de estudios válido.';
   if (type === 'staff') {
     if (!staffRoles.includes(body.role)) return 'Seleccione un rol institucional válido.';
     const additionalError = validateAdditionalPrograms(body);
     if (additionalError) return additionalError;
     const institutionalRole = ['Administrador', 'Vigilante'].includes(body.role);
     if (institutionalRole && body.program !== 'Institucional') return 'Administradores y vigilantes deben usar el ámbito Institucional.';
-    if (!institutionalRole && !transversalTeacher && !programs.includes(body.program)) return 'Seleccione el programa académico correspondiente al rol.';
+    if (!institutionalRole && body.role !== 'Padre o apoderado' && !transversalTeacher && !programs.includes(body.program)) return 'Seleccione el programa académico correspondiente al rol.';
     if (transversalTeacher && allowedAcademicRoles(body, body.role).some((role) => role === 'coordinador' || role === 'tutor')) return 'Un docente de Empleabilidad requiere un programa de estudios para ejercer coordinación o tutoría.';
     if (body.role === 'Vigilante' && body.shift && !guardShifts.includes(body.shift)) return 'Seleccione un turno válido para Vigilancia.';
     if (body.role === 'Vigilante' && String(body.pointOfControl || '').trim().length > 80) return 'El punto de control no debe superar 80 caracteres.';
@@ -1875,7 +1933,7 @@ app.get('/api/student/justifications/:id/evidence', requireStudent, (request, re
   if (!item?.evidenceFile) return response.sendStatus(404);
   const target = path.join(studentEvidenceDirectory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/student/follow-up', requireStudent, (request, response) => {
@@ -2023,7 +2081,7 @@ app.get('/api/parent/justifications/:id/evidence', requireParent, (request, resp
   const evidenceDirectory = item.evidenceSource === 'student' ? studentEvidenceDirectory : familyEvidenceDirectory;
   const target = path.join(evidenceDirectory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/parent/exits', requireParent, (request, response) => response.json({ items: familyExitItems(request), students: guardianStudentDetails(request) }));
@@ -2375,7 +2433,7 @@ app.get('/api/guard/incidents/:id/evidence', requireGuard, (request, response) =
   if (!item?.evidenceFile) return response.sendStatus(404);
   const target = path.join(guardEvidenceDirectory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/coordinator/security-incidents', requireCoordinator, (request, response) => {
@@ -2402,7 +2460,7 @@ app.get('/api/coordinator/security-incidents/:id/evidence', requireCoordinator, 
   if (!item?.evidenceFile) return response.sendStatus(404);
   const target = path.join(guardEvidenceDirectory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/admin/security-incidents', requireAdmin, (request, response) => response.json({ items: database.guardIncidents }));
@@ -2423,7 +2481,7 @@ app.get('/api/admin/security-incidents/:id/evidence', requireAdmin, (request, re
   if (!item?.evidenceFile) return response.sendStatus(404);
   const target = path.join(guardEvidenceDirectory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/guard/reports', requireGuard, (request, response) => {
@@ -2599,7 +2657,7 @@ app.get('/api/coordinator/justifications/:id/evidence', requireCoordinator, (req
   const directory = item.evidenceSource === 'student' ? studentEvidenceDirectory : familyEvidenceDirectory;
   const target = path.join(directory, path.basename(item.evidenceFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 
 app.get('/api/notifications', requireAuth, (request, response) => {
@@ -3776,7 +3834,8 @@ app.post('/api/admin/import/:type', requireAdmin, requireCsrf, excelUpload.singl
   if (!headerRow) return response.status(400).json({ error: 'La plantilla no contiene los encabezados esperados.' });
   const headers = importHeaderMap(sheet.getRow(headerRow));
   const requiredHeaders = profile ? ['nombres','apellidos','tipo de documento','documento','correo','usuario','contrasena inicial','estado'] : ['tipo de documento','documento','nombres','correo','rol','programa','estado','contrasena inicial'];
-  if (profile?.role !== 'Administrador' && profile?.role !== 'Vigilante') requiredHeaders.push('programa de estudios');
+  if (profile?.role === 'Padre o apoderado') requiredHeaders.push('documento del estudiante', 'nombre del estudiante', 'programa de estudios', 'semestre', 'parentesco o vinculo');
+  else if (profile?.role !== 'Administrador' && profile?.role !== 'Vigilante') requiredHeaders.push('programa de estudios');
   if (profile?.role === 'Docente') requiredHeaders.push('funcion de tutor');
   if (profile?.role === 'Vigilante') requiredHeaders.push('turno');
   const missingHeaders = requiredHeaders.filter((name) => !headers.has(name));
@@ -3792,13 +3851,26 @@ app.post('/api/admin/import/:type', requireAdmin, requireCsrf, excelUpload.singl
     const lastNames = valueFromHeaders(row, headers, 'apellidos');
     const username = valueFromHeaders(row, headers, 'usuario').toLowerCase();
     const tutorFunction = normalizedHeader(valueFromHeaders(row, headers, 'función de tutor', 'funcion de tutor'));
+    const parentImport = profile?.role === 'Padre o apoderado';
+    const studentDocument = parentImport
+      ? normalizeDocument(valueFromHeaders(row, headers, 'documento del estudiante'))
+      : '';
+    const linkedStudent = parentImport
+      ? database.students.find((student) => normalizeDocument(student.document) === studentDocument)
+      : null;
+    const studentName = parentImport ? valueFromHeaders(row, headers, 'nombre del estudiante') : '';
+    const studentProgram = parentImport ? valueFromHeaders(row, headers, 'programa de estudios') : '';
+    const studentSemester = parentImport ? valueFromHeaders(row, headers, 'semestre') : '';
+    const relationship = parentImport
+      ? valueFromHeaders(row, headers, 'parentesco o vínculo', 'parentesco o vinculo').trim()
+      : '';
     const item = {
       documentType: valueFromHeaders(row, headers, 'tipo de documento', 'tipo documento'),
       document: valueFromHeaders(row, headers, 'documento'),
       name: lastNames ? `${firstNames} ${lastNames}`.trim() : firstNames,
       email: valueFromHeaders(row, headers, 'correo').toLowerCase(),
       role: profile?.role || valueFromHeaders(row, headers, 'rol'),
-      program: profile?.institutional ? 'Institucional' : valueFromHeaders(row, headers, 'programa de estudios', 'programa'),
+      program: profile?.institutional ? 'Institucional' : parentImport ? '' : valueFromHeaders(row, headers, 'programa de estudios', 'programa'),
       additionalPrograms: profile?.role === 'Docente' ? [1, 2, 3].map((number) => valueFromHeaders(row, headers, 'programa adicional ' + number)).filter(Boolean) : [],
       username,
       password: valueFromHeaders(row, headers, 'contraseña inicial', 'contrasena inicial', 'contraseña', 'contrasena'),
@@ -3806,14 +3878,37 @@ app.post('/api/admin/import/:type', requireAdmin, requireCsrf, excelUpload.singl
       shift: profile?.role === 'Vigilante' ? valueFromHeaders(row, headers, 'turno') : '',
       pointOfControl: profile?.role === 'Vigilante' ? 'Puerta principal' : '',
       roles: importedStaffRoles(profile?.role, tutorFunction),
+      studentIds: linkedStudent ? [linkedStudent.id] : [],
+      relationship,
     };
     const validation = validatePerson(item, 'staff');
-    const duplicate = seenEmails.has(item.email) || seenDocuments.has(item.document) || database.staff.some((existing) => existing.email.toLowerCase() === item.email || normalizeDocument(existing.document) === item.document) || database.accounts.some((account) => account.email.toLowerCase() === item.email || normalizeDocument(account.document) === item.document);
-    const usernameError = profile && (!/^[a-z0-9._-]{3,64}$/.test(item.username) || seenUsernames.has(item.username) || database.accounts.some((account) => String(account.username || '').toLowerCase() === item.username)) ? 'El usuario no es válido o ya está registrado.' : '';
+    const repeatedParent = parentImport && accepted.find((candidate) => candidate.email === item.email || normalizeDocument(candidate.document) === item.document);
+    const existingDuplicate = database.staff.some((existing) => existing.email.toLowerCase() === item.email || normalizeDocument(existing.document) === item.document) || database.accounts.some((account) => account.email.toLowerCase() === item.email || normalizeDocument(account.document) === item.document);
+    const duplicate = existingDuplicate || (!repeatedParent && (seenEmails.has(item.email) || seenDocuments.has(item.document)));
+    const parentIdentityError = repeatedParent && (repeatedParent.email !== item.email || normalizeDocument(repeatedParent.document) !== normalizeDocument(item.document) || repeatedParent.name !== item.name || repeatedParent.username !== item.username || repeatedParent.password !== item.password || repeatedParent.state !== item.state || repeatedParent.relationship !== item.relationship)
+      ? 'Repita exactamente los datos del apoderado y el parentesco en cada fila vinculada.'
+      : repeatedParent?.studentIds?.includes(linkedStudent?.id)
+        ? 'No repita el mismo estudiante para el apoderado.'
+        : '';
+    const usernameError = profile && (!/^[a-z0-9._-]{3,64}$/.test(item.username) || ((!repeatedParent && seenUsernames.has(item.username)) || database.accounts.some((account) => String(account.username || '').toLowerCase() === item.username))) ? 'El usuario no es válido o ya está registrado.' : '';
     const passwordError = !validPassword(item.password) ? 'La contraseña inicial no cumple los requisitos de seguridad.' : '';
     const shiftError = item.role === 'Vigilante' && !guardShifts.includes(item.shift) ? 'Seleccione un turno válido.' : '';
     const tutorFunctionError = profile?.role === 'Docente' && !['si', 'no'].includes(tutorFunction) ? 'Seleccione Sí o No en Función de tutor.' : '';
-    if (validation || duplicate || usernameError || passwordError || shiftError || tutorFunctionError) errors.push({ row: rowNumber, message: duplicate ? 'Documento o correo duplicado.' : validation || usernameError || passwordError || shiftError || tutorFunctionError });
+    const parentLinkError = parentImport && (!studentDocument
+      ? 'Indique el documento del estudiante vinculado.'
+      : !linkedStudent
+        ? 'El documento del estudiante no existe en SIGA.'
+        : normalizedHeader(studentName) !== normalizedHeader(linkedStudent.name)
+          ? 'El nombre del estudiante no coincide con el documento indicado.'
+          : normalizedHeader(studentProgram) !== normalizedHeader(linkedStudent.program)
+            ? 'El programa de estudios no coincide con el estudiante indicado.'
+            : String(studentSemester).trim() !== String(linkedStudent.semester).trim()
+              ? 'El semestre no coincide con el estudiante indicado.'
+              : !relationship || relationship.length > 60
+                ? 'Indique un parentesco o vínculo de hasta 60 caracteres.'
+                : '');
+    if (validation || duplicate || usernameError || passwordError || shiftError || tutorFunctionError || parentIdentityError || parentLinkError) errors.push({ row: rowNumber, message: duplicate ? 'Documento o correo duplicado.' : validation || usernameError || passwordError || shiftError || tutorFunctionError || parentIdentityError || parentLinkError });
+    else if (repeatedParent) repeatedParent.studentIds.push(linkedStudent.id);
     else { seenEmails.add(item.email); seenDocuments.add(item.document); if (item.username) seenUsernames.add(item.username); accepted.push(item); }
   });
   if (errors.length) return response.status(422).json({ error: 'Se encontraron filas con errores.', errors, validRows: accepted.length });
@@ -3823,10 +3918,14 @@ app.post('/api/admin/import/:type', requireAdmin, requireCsrf, excelUpload.singl
     const password = item.password;
     delete item.password;
     const account = accountFromStaff(item, password);
+    if (item.role === 'Padre o apoderado') {
+      account.studentIds = item.studentIds;
+      account.relationship = item.relationship;
+    }
     item.accountId = account.id;
     database.staff.push(item);
     database.accounts.push(account);
-    adminAuditLog(request, 'staff', item.id, 'Importación Excel', `${item.name} · ${item.role}`);
+    adminAuditLog(request, 'staff', item.id, 'Importación Excel', `${item.name} · ${item.role}${item.role === 'Padre o apoderado' ? ` · ${item.studentIds.length} estudiante(s) vinculado(s)` : ''}`);
   });
   saveDatabase(); response.json({ message: `${accepted.length} registros importados correctamente.`, imported: accepted.length, errors: [] });
 }));
@@ -3931,7 +4030,7 @@ app.get('/api/account/photo', requireAuth, (request, response) => {
   if (!request.account.photoFile) return response.sendStatus(404);
   const target = path.join(profilePhotoDirectory, path.basename(request.account.photoFile));
   if (!fs.existsSync(target)) return response.sendStatus(404);
-  response.sendFile(target);
+  return sendProtectedFile(response, target);
 });
 app.post('/api/account/photo', requireAuth, requireCsrf, upload.single('photo'), asyncRoute(async (request, response) => {
   if (!request.file) return response.status(400).json({ error: 'Seleccione una fotografía.' });
@@ -3940,7 +4039,7 @@ app.post('/api/account/photo', requireAuth, requireCsrf, upload.single('photo'),
   if (!extension) return response.status(400).json({ error: 'Use una imagen JPG, PNG o WebP válida.' });
   await scanEvidence(request.file.buffer);
   const filename = `${request.account.id}-${crypto.randomUUID()}.${extension}`;
-  await fs.promises.writeFile(path.join(profilePhotoDirectory, filename), request.file.buffer, { flag: 'wx', mode: 0o600 });
+  await fs.promises.writeFile(path.join(profilePhotoDirectory, filename), encryptBuffer(request.file.buffer), { flag: 'wx', mode: 0o600 });
   removeProfilePhoto(request.account);
   request.account.photoFile = filename;
   saveDatabase();
@@ -3973,7 +4072,7 @@ app.get('/api/admin/usage-metrics', requireAdmin, (request, response) => {
 });
 
 app.get('/health', (request, response) => {
-  const available = storageProvider !== 'sqlserver' || Boolean(sqlServerStore);
+  const available = storageProvider === 'json' || Boolean(databaseStore);
   response.status(available ? 200 : 503).json({ status: available ? 'ok' : 'unavailable' });
 });
 
@@ -4008,6 +4107,23 @@ app.get(['/privacidad', '/privacidad.html'], (request, response, next) => {
     .catch(next);
 });
 app.get('/robots.txt', (request, response) => response.type('text/plain').send('User-agent: *\nDisallow: /\n'));
+app.get(['/script.js', '/styles.css'], (request, response, next) => {
+  if (!['GET', 'HEAD'].includes(request.method)) return next();
+  const accepted = String(request.get('accept-encoding') || '').toLowerCase();
+  const source = path.join(publicDirectory, request.path.slice(1));
+  const variants = accepted.includes('br')
+    ? [{ encoding: 'br', file: `${source}.br` }, { encoding: 'gzip', file: `${source}.gz` }]
+    : accepted.includes('gzip')
+      ? [{ encoding: 'gzip', file: `${source}.gz` }]
+      : [];
+  const selected = variants.find((variant) => fs.existsSync(variant.file));
+  if (!selected) return next();
+  response.setHeader('Content-Encoding', selected.encoding);
+  response.setHeader('Vary', 'Accept-Encoding');
+  response.setHeader('Cache-Control', 'public, max-age=86400');
+  response.type(path.extname(source));
+  return response.sendFile(selected.file);
+});
 app.use('/assets', express.static(path.join(publicDirectory, 'assets'), { etag: true, maxAge: '30d', immutable: false }));
 app.use(express.static(publicDirectory, {
   extensions: ['html'],
@@ -4028,12 +4144,16 @@ app.use((error, request, response, next) => {
   if (error.code === 'SIGA_ANTIMALWARE_REJECTED') return response.status(422).json({ error: error.message });
   if (error.code === 'SIGA_ANTIMALWARE_UNAVAILABLE') return response.status(503).json({ error: error.message });
   if (error.code === 'SIGA_WRITE_CONFLICT') return response.status(409).json({ error: error.message });
+  if (error.code === 'SIGA_STATE_TOO_LARGE') return response.status(507).json({ error: error.message });
   if (!request.path.startsWith('/api/') && request.accepts('html')) return response.status(500).sendFile(path.join(publicDirectory, '500.html'));
   return response.status(500).json({ error: 'No fue posible completar la operación.' });
 });
 
 function startServer(port, attemptsRemaining = 10) {
-  const server = app.listen(port, bindHost, () => console.log(`SIGA Web disponible en http://${bindHost}:${port}`));
+  const shownHost = bindHost === '0.0.0.0' || bindHost === '::'
+    ? (String(process.env.SIGA_LAN_ADDRESS || '').trim() || 'localhost')
+    : bindHost;
+  const server = app.listen(port, bindHost, () => console.log(`SIGA Web disponible en http://${shownHost}:${port}`));
   server.on('error', (error) => {
     if (error.code === 'EADDRINUSE' && attemptsRemaining > 0 && !process.env.PORT) {
       console.warn(`El puerto ${port} está ocupado. Intentando con ${port + 1}...`);
@@ -4054,10 +4174,10 @@ if (require.main === module) {
   for (const signal of ['SIGINT', 'SIGTERM']) {
     process.once(signal, () => {
       closePersistence()
-        .catch((error) => console.error('Error al cerrar SQL Server:', error.message))
+        .catch((error) => console.error('Error al cerrar la persistencia:', error.message))
         .finally(() => process.exit(0));
     });
   }
 }
 
-module.exports = { app, startServer, initializePersistence, closePersistence, limaDate, validIsoDate, evidenceExtension, productionConfigurationErrors, antimalwareArguments, importedStaffRoles, sendTemplate, emptyStudentImportRow, teacherPrograms, validateAdditionalPrograms, validatePerson };
+module.exports = { app, startServer, initializePersistence, closePersistence, limaDate, validIsoDate, evidenceExtension, productionConfigurationErrors, applyTechnicalRetention, antimalwareArguments, importedStaffRoles, sendTemplate, emptyStudentImportRow, teacherPrograms, validateAdditionalPrograms, validatePerson };

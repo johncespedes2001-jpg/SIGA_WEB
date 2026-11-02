@@ -5,7 +5,7 @@
   "description": "Plataforma web multiperfil para SIGA",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file-if-exists=.env server.js",
+    "start": "node --env-file-if-exists=.env operations/start.js",
     "start:mariadb-local": "powershell -ExecutionPolicy Bypass -File operations/start-mariadb-local.ps1",
     "dev": "node --watch --env-file-if-exists=.env server.js",
     "check": "node --check server.js && node --check public/script.js && node --check database/store.js && node --check database/data-protection.js && node --check database/mariadb-store.js && node --check database/mariadb-relational-sync.js && node --check database/mariadb-integrity.js && node --check database/setup-mariadb.js && node --check operations/configure-mariadb-app-user.js && node --check operations/mariadb-cli.js && node --check operations/backup-mariadb.js && node --check operations/protect-mariadb-state.js && node --check operations/restore-mariadb-test.js && node --check operations/reset-test-users.js && node --check operations/audit-database.js && node --check operations/remove-qr-test-data.js && node --check operations/official-data-preflight.js && node --check operations/prepare-official-data.js",
